@@ -170,15 +170,36 @@
             margin-top: 2vh;
             border: 1px solid #000000;
         }
+
+        .sentence_hitokoto {
+            transform: translateX(10vw);
+        }
+
+        #sentence_hitokoto_main {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: left;
+            color: azure;
+            width: 75%;
+        }
+
+        #sentence_hitokoto_from {
+            font-size: 1rem;
+            text-align: right;
+            color: rgb(241, 241, 241);
+            width: 75%;
+        }
     </style>
 </head>
 
 <body>
     <div class="card_header">
         <img src="/Malisa.jpg" class="faceImg" alt="233">
-        <h2>
-            I'm Malisa
-        </h2>
+        <h2>I'm Malisa</h2>
+        <div class="sentence_hitokoto">
+            <div id="sentence_hitokoto_main"></div>
+            <div id="sentence_hitokoto_from"></div>
+        </div>
     </div>
     <div class="container">
         <div class="card animated"></div>
@@ -189,7 +210,7 @@
             <div class="card-content">
                 <div class="chatinput">
                     <input type="text" id="content" placeholder="请输入内容...">
-                    <button onclick="sendMsg('<%= pkey %>')">发送</button>
+                    <button onclick="sendMsg()">发送</button>
                 </div>
                 <div id="chat">
                 </div>
@@ -198,6 +219,17 @@
         <div class="card animated"></div>
     </div>
     <script>
+        window.onload = async function () {
+            await fetch('https://v1.hitokoto.cn/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sentence_hitokoto_main').innerHTML = `「${data.hitokoto}」`
+                    document.getElementById('sentence_hitokoto_from').innerHTML = `——「${data.from}」`
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        };
 
         function toggleCardContent(card) {
             const cardContent = card.nextElementSibling;
@@ -208,7 +240,7 @@
             }
         }
 
-        async function sendMsg(publicKey) {
+        async function sendMsg() {
             const content = document.getElementById('content').value;
             if (!content) {
                 alert('内容不能为空');
@@ -224,13 +256,12 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    text: content,
-                    pkey: publicKey
+                    text: content
                 })
             });
             const data = await response.json();
 
-            if (data.code === -233 || data.code === -1 || data.code === 1) {
+            if (data.code === -233) {
                 document.getElementById('chatA').innerHTML = data.message;
             }
             if (data.code != 0) {
@@ -285,9 +316,9 @@
         window.addEventListener('scroll', function () {
             clearTimeout(timeout);
             timeout = setTimeout(() => {
-                const animatedBoxes = document.querySelectorAll('.animated'); // 获取所有元素
+                const animatedBoxes = document.querySelectorAll('.animated');
                 const windowHeight = window.innerHeight;
-                animatedBoxes.forEach(animatedBox => { // 遍历每个元素
+                animatedBoxes.forEach(animatedBox => {
                     const position = animatedBox.getBoundingClientRect().top;
                     if (position < windowHeight) {
                         animatedBox.classList.add('active');
@@ -297,6 +328,7 @@
                 });
             }, 15);
         });
+
     </script>
 </body>
 

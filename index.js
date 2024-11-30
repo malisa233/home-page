@@ -114,7 +114,7 @@ function hmac_sha256_encode(value, key) {
         .update(value, 'utf8')
         .digest('hex');
     return hash;
-}
+} 
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -124,10 +124,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
-
-app.get('/clearCookie', (req, res) => {
-    res.clearCookie('info');
-});
 
 app.get('/captcha', (req, res) => {
     try {
@@ -171,15 +167,7 @@ app.post('/api/geetest', (req, res) => {
 });
 
 app.post('/api/chat/completions',checkIllegal, (req, res) => {
-    const { text, pkey } = req.body;
-    if (!pkey) {
-        res.status(400).json({ code: 1, message: '缺少公钥,建议重新刷新页面' });
-        return;
-    }
-    if (pkey !== publicKey) {
-        res.status(401).json({ code: 1, message: '公钥错误,建议重新刷新页面' });
-        return;
-    }
+    const { text } = req.body;
     chatbot(text)
         .then(message => {
             res.status(200).json({ code: 0, message: message });
@@ -191,7 +179,7 @@ app.post('/api/chat/completions',checkIllegal, (req, res) => {
 });
 
 app.get('/', checkIllegal, (req, res) => {
-    res.render('index', { pkey: publicKey });
+    res.render('index');
 });
 
 app.listen(3000, () => {
