@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #redirectUrl {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="captcha"></div>
+    <div id="redirectUrl"><%= redirectUrl %></div>
+    <script src="./gt4.js"></script>
+    <script>
+        initGeetest4({
+            captchaId: '7d2921682d2579f85f4242fc1f6db798',
+            product: 'float'
+        }, function (captcha) {
+            captcha.appendTo("#captcha");
+            captcha.onSuccess(function (e) {
+                var result = captcha.getValidate();
+                fetch('http://103.40.13.88:44447/api/geetest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(result)
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    if (data.code == 0) {
+                        window.location.href = document.getElementById("redirectUrl").textContent;
+                    } else {
+                        alert(data.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert('网络错误，请稍后再试');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
