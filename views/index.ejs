@@ -171,7 +171,7 @@
             border: 1px solid #000000;
         }
 
-        .sentence_hitokoto {
+        #sentence_hitokoto {
             transform: translateX(10vw);
         }
 
@@ -189,6 +189,34 @@
             color: rgb(241, 241, 241);
             width: 75%;
         }
+
+        @keyframes active-opacity-show {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes active-opacity-close {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .active-opacity-show {
+            animation: active-opacity-show 0.5s ease forwards;
+        }
+
+        .active-opacity-close {
+            animation: active-opacity-close 0.5s ease forwards;
+        }
     </style>
 </head>
 
@@ -196,9 +224,9 @@
     <div class="card_header">
         <img src="/Malisa.jpg" class="faceImg" alt="233">
         <h2>I'm Malisa</h2>
-        <div class="sentence_hitokoto">
-            <div id="sentence_hitokoto_main"></div>
-            <div id="sentence_hitokoto_from"></div>
+        <div id="sentence_hitokoto" onclick="loadHitokoto()">
+            <div id="sentence_hitokoto_main">这里应该是一句话</div>
+            <div id="sentence_hitokoto_from">这里应该是作者</div>
         </div>
     </div>
     <div class="container">
@@ -220,6 +248,14 @@
     </div>
     <script>
         window.onload = async function () {
+            setInterval(loadHitokoto, 15000);
+            loadHitokoto()
+        };
+
+        async function loadHitokoto() {
+            const sentence_hitokoto = document.getElementById('sentence_hitokoto');
+            sentence_hitokoto.classList.remove('active-opacity-show');
+            sentence_hitokoto.classList.add('active-opacity-close');
             await fetch('https://v1.hitokoto.cn/')
                 .then(response => response.json())
                 .then(data => {
@@ -229,7 +265,9 @@
                 .catch(error => {
                     console.error(error);
                 });
-        };
+            sentence_hitokoto.classList.remove('active-opacity-close');
+            sentence_hitokoto.classList.add('active-opacity-show');
+        }
 
         function toggleCardContent(card) {
             const cardContent = card.nextElementSibling;
