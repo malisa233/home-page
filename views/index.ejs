@@ -4,47 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        malisa的个人主页
-    </title>
+    <title>malisa的个人主页</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        @media only screen and (max-width: 768px) {
-            .faceImg {
-                width: 30vw;
-                height: 30vw;
-                border-radius: 50%;
-                margin-top: 2vh;
-                border: 1px solid #000000;
-            }
-        }
-
-        @media only screen and (min-width: 769px) {
-            .faceImg {
-                width: 13vw;
-                height: 13vw;
-                border-radius: 50%;
-                margin-top: 2vh;
-                border: 1px solid #000000;
-            }
-        }
-
-        .animated {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .animated.active {
-            animation: active-box 0.5s ease forwards;
-        }
-
-        @keyframes active-box {
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -58,146 +20,37 @@
         }
 
         .container {
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
-        .card_header {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            background-color: rgba(122, 122, 122, 0.6);
             justify-content: center;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-            text-align: center;
-            border-radius: 10px;
+            height: 100%;
+            background-color: rgba(165, 165, 165, 0.4);
+
         }
 
-        .card_header:hover {
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-        }
-
-        .card_header h2 {
-            color: #f0f0f0;
-            font-size: 2.5rem;
-            margin-top: 20px;
-        }
-
-        .card {
-            margin-top: 10px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: left;
-        }
-
-        .card:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-content {
-            display: none;
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-
-        @keyframes active-show {
-            70% {
-                opacity: 1;
-                transform: translateX(20px);
-            }
-
-            100% {
-                transform: translateX(0);
-            }
-        }
-
-        .card-content.active {
-            display: block;
-            animation: active-box 0.5s ease forwards;
-        }
-
-        input {
-            width: 91%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            border: none;
-            border-radius: 4px;
-            background-color: #f0f0f0;
-        }
-
-        input:focus {
-            outline: none;
-            background-color: #e0e0e0;
-        }
-
-        button {
-            background-color: #f4aaa6;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #f09480;
-        }
-
-        .chatinput {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .chat-item-user {
+        .container-header {
             align-items: center;
+            justify-content: center;
         }
 
-        .chat-item-user,
-        .chat-item-chat {
-            margin-bottom: 10px;
-            display: flex;
-            text-align: left;
-        }
-
-        .chatImg {
-            width: 50px;
-            height: 50px;
+        .container-header img {
+            width: 20vh;
+            height: 20vh;
             border-radius: 50%;
-            margin-top: 2vh;
-            border: 1px solid #000000;
+            overflow: hidden;
+            object-fit: cover;
         }
 
-        #sentence_hitokoto {
-            transform: translateX(10vw);
+        .container-header h1 {
+            color: rgba(255, 255, 255, 0.938);
         }
 
-        #sentence_hitokoto_main {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: left;
-            color: azure;
-            width: 75%;
-        }
-
-        #sentence_hitokoto_from {
-            font-size: 1rem;
-            text-align: right;
-            color: rgb(241, 241, 241);
-            width: 75%;
-        }
-
-        @keyframes active-opacity-show {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
+        hr {
+            width: 68%;
+            border: none;
+            height: 2px;
+            background-color: #5c4e4e91;
         }
 
         @keyframes active-opacity-close {
@@ -210,47 +63,66 @@
             }
         }
 
+        @keyframes active-opacity-show {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
         .active-opacity-show {
-            animation: active-opacity-show 0.5s ease forwards;
+            animation: active-opacity-show 1s ease-in-out;
         }
 
         .active-opacity-close {
-            animation: active-opacity-close 0.5s ease forwards;
+            animation: active-opacity-close 1s ease-in-out;
+        }
+
+        #sentence_hitokoto {
+            transform: translateX(10vw);
+            width: 80vw;
+        }
+
+        #sentence_hitokoto_main {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: left;
+            color: rgba(240, 255, 255, 0.966);
+            width: 75%;
+        }
+
+        #sentence_hitokoto_from {
+            font-size: 1rem;
+            text-align: right;
+            color: rgba(245, 245, 245, 0.826);
+            width: 75%;
         }
     </style>
 </head>
 
 <body>
-    <div class="card_header">
-        <img src="/Malisa.jpg" class="faceImg" alt="233">
-        <h2>I'm Malisa</h2>
-        <div id="sentence_hitokoto" onclick="loadHitokoto()">
-            <div id="sentence_hitokoto_main">这里应该是一句话</div>
-            <div id="sentence_hitokoto_from">这里应该是作者</div>
-        </div>
-    </div>
     <div class="container">
-        <div class="card animated"></div>
-        <div class="card animated">
-            <div class="card-title" onclick="toggleCardContent(this)">
-                <h2>MLISA超级大模型</h2>
-            </div>
-            <div class="card-content">
-                <div class="chatinput">
-                    <input type="text" id="content" placeholder="请输入内容...">
-                    <button onclick="sendMsg()">发送</button>
-                </div>
-                <div id="chat">
-                </div>
+        <div class="container-header">
+            <img src="./malisa.jpg" alt="malisa233">
+            <h1>I'm Malisa</h1>
+        </div>
+        <hr>
+        <div class="container-body">
+            <div id="sentence_hitokoto" onclick="loadHitokoto()">
+                <div id="sentence_hitokoto_main">这里应当是一句话</div>
+                <div id="sentence_hitokoto_from">这里应当是作者</div>
             </div>
         </div>
-        <div class="card animated"></div>
     </div>
+
     <script>
-        window.onload = async function () {
+        window.onload = function () {
+            loadHitokoto();
             setInterval(loadHitokoto, 15000);
-            loadHitokoto()
-        };
+        }
 
         async function loadHitokoto() {
             const sentence_hitokoto = document.getElementById('sentence_hitokoto');
@@ -268,105 +140,6 @@
             sentence_hitokoto.classList.remove('active-opacity-close');
             sentence_hitokoto.classList.add('active-opacity-show');
         }
-
-        function toggleCardContent(card) {
-            const cardContent = card.nextElementSibling;
-            if (cardContent.classList.contains('active')) {
-                cardContent.classList.remove('active');
-            } else {
-                cardContent.classList.add('active');
-            }
-        }
-
-        async function sendMsg() {
-            const content = document.getElementById('content').value;
-            if (!content) {
-                alert('内容不能为空');
-                return;
-            }
-            const chatE = document.getElementById('chat');
-            document.getElementById('content').value = '';
-            chatE.innerHTML = `<div class="chat-item-user"><i class='bx bx-user-circle' style='transform: scale(2.2);margin-right: 10px;margin-left: 15px;'></i><p style='margin-left: 10px;'>${content}</p></div>
-            <div class="chat-item-chat"><img src="/Malisa.jpg" class="chatImg" alt="malisa233"><p id="chatA">MLISA正在思考中<i class='bx bx-loader-alt bx-spin' ></i></p></div>`;
-            const response = await fetch('http://103.40.13.88:44447/api/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    text: content
-                })
-            });
-            const data = await response.json();
-
-            if (data.code === -233) {
-                document.getElementById('chatA').innerHTML = data.message;
-            }
-            if (data.code != 0) {
-                document.getElementById('chatA').innerHTML = '请求错误，请稍后再试';
-            }
-            let i = 0;
-            const cmessage = await splitRandomly(data.message);
-            document.getElementById('chatA').innerHTML = '';
-            const typingInterval = setInterval(() => {
-                document.getElementById('chatA').innerHTML += cmessage[i];
-                i++;
-
-                if (i === cmessage.length) {
-                    clearInterval(typingInterval);
-                }
-            }, getRandomInt(60, 120));
-        }
-
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
-        async function splitRandomly(text) {
-            if (typeof text !== 'string') {
-                console.error('输入必须是字符串');
-                return [];
-            }
-
-            const result = [];
-            let index = 0;
-            const textLength = text.length;
-
-            while (index < textLength) {
-                const maxRandomLength = Math.min(5, textLength - index);
-                const randomLength = Math.floor(Math.random() * maxRandomLength) + 1;
-
-                result.push(text.slice(index, index + randomLength));
-                index += randomLength;
-            }
-
-            return result;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const animatedBoxes = document.querySelectorAll('.animated');
-            animatedBoxes.forEach(animatedBox => {
-                animatedBox.classList.add('active');
-            });
-        });
-
-        let timeout;
-        window.addEventListener('scroll', function () {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                const animatedBoxes = document.querySelectorAll('.animated');
-                const windowHeight = window.innerHeight;
-                animatedBoxes.forEach(animatedBox => {
-                    const position = animatedBox.getBoundingClientRect().top;
-                    if (position < windowHeight) {
-                        animatedBox.classList.add('active');
-                    } else {
-                        animatedBox.classList.remove('active');
-                    }
-                });
-            }, 15);
-        });
-
     </script>
 </body>
 

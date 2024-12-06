@@ -59,6 +59,7 @@ const checkIllegal = (req, res, next) => {
     } catch {
         res.cookie('info', '', { maxAge: 0, httpOnly: true });
         return res.status(400).json({ code: -233, message: '请刷新页面进行人机验证' });
+
     }
 }
 function encryptAES(text) {
@@ -114,7 +115,7 @@ function hmac_sha256_encode(value, key) {
         .update(value, 'utf8')
         .digest('hex');
     return hash;
-} 
+}
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -130,7 +131,18 @@ app.get('/captcha', (req, res) => {
         const info_decrypted = JSON.parse(decryptAES(req.cookies.info))
         res.render('captcha', { redirectUrl: info_decrypted.redirectUrl });
     } catch {
-        return res.send('非法请求');
+        return res.status(404).send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="utf-8">
+            <title>Error</title>
+            </head>
+            <body>
+            <pre>Cannot ${req.method} /captcha</pre>
+            </body>
+        </html>`
+        );
     }
 });
 
@@ -166,7 +178,7 @@ app.post('/api/geetest', (req, res) => {
     })
 });
 
-app.post('/api/chat/completions',checkIllegal, (req, res) => {
+app.post('/api/chat/completions', checkIllegal, (req, res) => {
     const { text } = req.body;
     chatbot(text)
         .then(message => {
@@ -180,6 +192,10 @@ app.post('/api/chat/completions',checkIllegal, (req, res) => {
 
 app.get('/', checkIllegal, (req, res) => {
     res.render('index');
+});
+
+app.get('/chat', checkIllegal, (req, res) => {
+    res.render('chat');
 });
 
 app.listen(3000, () => {
