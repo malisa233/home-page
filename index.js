@@ -10,9 +10,12 @@ const axios = require('axios');
 
 const secretKey = Buffer.from([3, 107, 37, 82, 18, 68, 2, 156, 191, 39, 196, 211, 27, 173, 122, 24, 53, 91, 124, 42, 210, 78, 62, 108, 138, 230, 172, 166, 125, 197, 27, 167]);
 const iv = crypto.randomBytes(16);
-const SPARK_TOKEN = `wZoywWrKlBKXBbzdaYHu:JmYCNiAscbiLsPNiUGSs`;
 const publicKey = crypto.randomBytes(24).toString('hex');
+
+//配置区-->
+const SPARK_TOKEN = `wZoywWrKlBKXBbzdaYHu:JmYCNiAscbiLsPNiUGSs`;
 const GEE_CAPTCHA_KEY = `9f13430d7105b3bcefdc765f5538585f`;
+//<--配置区
 
 const checkIllegal = (req, res, next) => {
     try {
