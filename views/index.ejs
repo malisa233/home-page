@@ -32,6 +32,11 @@
         .container-header {
             align-items: center;
             justify-content: center;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            margin-top: 5vh;
+        
         }
 
         .container-header img {
@@ -97,13 +102,54 @@
         #sentence_hitokoto_from {
             font-size: 1rem;
             text-align: right;
-            color: rgba(245, 245, 245, 0.826);
+            color: rgba(245, 245, 245, 0.9);
             width: 75%;
+        }
+
+        .container-links {
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: auto;
+            grid-gap: 1rem;
+            margin-top: 2rem;   
+        }
+
+        .container-link {
+            margin: 0 1rem;
+            background-color: #d4a3a9b9;
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container-link:hover {
+            background-color: #f0abb3b9;
+            cursor: pointer;
+        }
+
+        .container-links a {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.705);
+            font-size: 2rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container-links a:hover {
+            color: rgba(255, 255, 255, 0.705);
+            transform: scale(1.1);
+        }
+
+        .container-links i {
+            font-size: 1.5rem;
+            font-weight: bold;
         }
     </style>
 </head>
 
-<body>
+<body class="active-opacity-show">
     <div class="container">
         <div class="container-header">
             <img src="./malisa.jpg" alt="malisa233">
@@ -115,13 +161,19 @@
                 <div id="sentence_hitokoto_main">这里应当是一句话</div>
                 <div id="sentence_hitokoto_from">这里应当是作者</div>
             </div>
+            <div class="container-links">
+                <div class="container-link"><a href="http://103.40.13.88:44449" target="_blank"><i class='bx bx-cloud'>网盘</i></a></div>
+                <div class="container-link"><a href="https://space.bilibili.com/1504431846" target="_blank"><i class='bx bx-tv' >Bilibili</i></a></div>
+                <div class="container-link"><a href="http://103.40.13.88:44449" target="_blank"><i class='bx bxl-github' >Github</i></a></div>
+                
+            </div>
         </div>
     </div>
 
     <script>
         window.onload = function () {
             loadHitokoto();
-            setInterval(loadHitokoto, 15000);
+            setInterval(loadHitokoto, 20000);
         }
 
         async function loadHitokoto() {
