@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>控制台</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+
+        .admin-body {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            grid-gap: 20px;
+            padding: 20px;
+            height: 90vh;
+        }
+
+        .admin-menu {
+            background-color: #1f79a3;
+            height: 100%;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            align-items: center;
+        }
+
+        .admin-content {
+            background-color: #ebebeb;
+            height: 100%;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .admin-menu h2 {
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 25px;
+            line-height: 25px;
+            margin: 0 0 25px 0;
+        }
+
+        .admin-menu-link-choise {
+            margin-top: 5px;
+            padding: 0;
+            height: 40px;
+            width: 100%;
+            text-align: center;
+            align-items: center;
+            background-color: #258ebe;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .admin-menu-link-common {
+            margin-top: 5px;
+            padding: 0;
+            height: 40px;
+            width: 100%;
+            text-align: center;
+            align-items: center;
+            background-color: #1f79a3;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .admin-menu-link-common:hover {
+            background-color: #247397;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .admin-menu-link-choise:hover {
+            background-color: #2783ad;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .admin-menu p {
+            margin: 0;
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .admin-content-item {
+            display: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 0 5px #ccc;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #1f79a3;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #247397;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-body">
+        <div class="admin-menu" id="admin-menu">
+            <h2>控制台</h2>
+            <div class="admin-menu-link-choise" onclick="choLink(this)">
+                <p>总览</p>
+            </div>
+            <div class="admin-menu-link-common" onclick="choLink(this)">
+                <p>基础设置</p>
+            </div>
+
+        </div>
+        <div class="admin-content" id="admin-content">
+            <div class="admin-content-item" id="setting">
+                <h1>基础设置</h1>
+                <div class="admin-content-item-content">
+                    <div class="admin-content-item-content-form">
+                        <label for="title">标题: </label>
+                        <input type="text" id="title" value="<%= title %>" required>
+                        <br>
+                        <label for="description">描述: </label>
+                        <input type="text" id="description" value="<%= description %>" required>
+                        <br>
+                        <label for="ischeckIllegal">是否使用人机验证: </label>
+                        <% if (ischeckIllegal) { %>
+                        <input type="checkbox" id="ischeckIllegal" checked >
+                        <% } else { %>
+                        <input type="checkbox" id="ischeckIllegal">
+                        <% } %>
+                        <br>
+                        <label for="isuseHVHsentence">是否使用韩小韩语句: </label>
+                        <% if (isuseHVHsentence) { %>
+                        <input type="checkbox" id="isuseHVHsentence" checked >
+                        <% } else { %>
+                        <input type="checkbox" id="isuseHVHsentence" >
+                        <% } %>
+                        <br>
+                        <label for="footer_text">尾部文字: </label>
+                        <input type="text" id="footer_text" value="<%= footer_text %>" required>
+                        <br>
+                        <label for="link1_text">标题1: </label>
+                        <input type="text" id="link1_text" value="<%= link1_text %>" required>
+                        <br>
+                        <label for="link1_url">跳转链接1: </label>
+                        <input type="text" id="link1_url" value="<%= link1_url %>" required>
+                        <br>
+                        <label for="link2_text">标题2: </label>
+                        <input type="text" id="link2_text" value="<%= link2_text %>" required>
+                        <br>
+                        <label for="link2_url">跳转链接2: </label>
+                        <input type="text" id="link2_url" value="<%= link2_url %>" required>
+                        <br>
+                        <label for="link3_text">标题3: </label>
+                        <input type="text" id="link3_text" value="<%= link3_text %>" required>
+                        <br>
+                        <label for="link3_url">跳转链接3: </label>
+                        <input type="text" id="link3_url" value="<%= link3_url %>" required>
+                        <br>
+                        <label for="link4_text">标题4: </label>
+                        <input type="text" id="link4_text" value="<%= link4_text %>" required>
+                        <br>
+                        <label for="link4_url">跳转链接4: </label>
+                        <input type="text" id="link4_url" value="<%= link4_url %>" required>
+                        <br>
+
+                    </div>
+                    <button type="submit" onclick="saveSetting()">保存</button>
+                </div>
+            </div>
+            <div class="admin-content-item" id="dashboard">
+                <h1>总览</h1>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        window.onload = function () {
+            showContent("总览");
+        }
+
+        async function saveSetting() {
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const ischeckIllegal = document.getElementById("ischeckIllegal").checked;
+            const isuseHVHsentence = document.getElementById("isuseHVHsentence").checked;
+            const footer_text = document.getElementById("footer_text").value;
+            const link1_text = document.getElementById("link1_text").value;
+            const link1_url = document.getElementById("link1_url").value;
+            const link2_text = document.getElementById("link2_text").value;
+            const link2_url = document.getElementById("link2_url").value;
+            const link3_text = document.getElementById("link3_text").value;
+            const link3_url = document.getElementById("link3_url").value;
+            const link4_text = document.getElementById("link4_text").value;
+            const link4_url = document.getElementById("link4_url").value;
+            const data = {
+                title: title,
+                description: description,
+                ischeckIllegal: ischeckIllegal,
+                isuseHVHsentence: isuseHVHsentence,
+                footer_text: footer_text,
+                link1_text: link1_text,
+                link1_url: link1_url,
+                link2_text: link2_text,
+                link2_url: link2_url,
+                link3_text: link3_text,
+                link3_url: link3_url,
+                link4_text: link4_text,
+                link4_url: link4_url
+            }
+            
+            const response = await fetch('/admin/config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result.code == 0) {
+                alert(result.message);
+            } else {
+                alert(result.message);
+            }
+            location.reload();
+        }
+
+        function showContent(name) {
+            const content = document.getElementById("admin-content");
+            if (name == "总览") {
+                document.getElementById("dashboard").style.display = "block";
+                document.getElementById("setting").style.display = "none";
+            } else if (name == "基础设置") {
+                document.getElementById("dashboard").style.display = "none";
+                document.getElementById("setting").style.display = "block";
+            }
+        }
+
+        function choLink(link) {
+            const p = link.getElementsByTagName("p")[0];
+            resLink();
+            link.classList.remove("admin-menu-link-common");
+            link.classList.add("admin-menu-link-choise");
+            showContent(p.innerHTML);
+        }
+
+        function resLink() {
+            var link = document.getElementById("admin-menu").getElementsByTagName("div");
+            for (var i = 0; i < link.length; i++) {
+                link[i].classList.remove("admin-menu-link-choise");
+                link[i].classList.add("admin-menu-link-common");
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>malisa的个人主页</title>
+    <title><%= title %></title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         body {
@@ -58,6 +58,14 @@
             background-color: #5c4e4e91;
         }
 
+        .container-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width:  80%;
+        }
+
         @keyframes active-opacity-close {
             0% {
                 opacity: 1;
@@ -88,7 +96,8 @@
 
         #sentence_hxh {
             transform: translateX(10vw);
-            width: 80vw;
+            width:100%;        
+            margin-top: 1rem;
         }
 
         #sentence_hxh_main {
@@ -111,10 +120,11 @@
             grid-template-columns: repeat(2, 1fr);
             grid-gap: 1rem;
             margin-top: 2rem;
+            width: 80%;
         }
 
         .container-link {
-            margin: 0 1rem;
+            margin: 0;
             background-color: #d4a3a9b9;
             border-radius: 10px;
             padding: 1rem;
@@ -129,21 +139,20 @@
             cursor: pointer;
         }
 
-        .container-links a {
-            text-decoration: none;
-            color: rgba(0, 0, 0, 0.705);
-            font-size: 2rem;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .container-links a:hover {
-            color: rgba(255, 255, 255, 0.705);
-            transform: scale(1.1);
-        }
-
         .container-links i {
             font-size: 1.5rem;
             font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.705);
+            transition: all 0.3s ease-in-out;
+        }
+
+        a:hover {
+            color: rgba(255, 255, 255, 0.705);
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -151,34 +160,36 @@
 <body class="active-opacity-show">
     <div class="container">
         <div class="container-header">
-            <img src="./malisa.jpg" alt="malisa233">
-            <h1>I'm Malisa</h1>
+            <img src="./faceImg.jpg" alt="faceImg">
+            <h1><%= description %></h1>
         </div>
         <hr>
         <div class="container-body">
+            <% if (isuseHVHsentence) { %>
             <div id="sentence_hxh" onclick="loadHxh()">
                 <div id="sentence_hxh_main">这里应当是一句话</div>
                 <div id="sentence_hxh_from">————「韩小韩」</div>
             </div>
+            <% } %>
             <div class="container-links">
                 <div class="container-link">
-                    <a href="http://103.40.13.88:44449" target="_blank">
-                        <i class='bx bx-cloud'>网盘</i>
+                    <a href="<%= link1_url %>" target="_blank">
+                        <i class='bx bx-cloud'><%= link1_text %></i>
                     </a>
                 </div>
                 <div class="container-link">
-                    <a href="https://space.bilibili.com/1504431846" target="_blank">
-                        <i class='bx bx-tv'>B站</i>
+                    <a href="<%= link2_url %>" target="_blank">
+                        <i class='bx bx-cloud'><%= link2_text %></i>
                     </a>
                 </div>
                 <div class="container-link">
-                    <a href="https://github.com/malisa233" target="_blank">
-                        <i class='bx bxl-github'>Github</i>
+                    <a href="<%= link3_url %>" target="_blank">
+                        <i class='bx bx-cloud'><%= link3_text %></i>
                     </a>
                 </div>
                 <div class="container-link">
-                    <a href="http://103.40.13.88:44446" target="_blank">
-                        <i class='bx bx-book-content'>博客</i>
+                    <a href="<%= link4_url %>" target="_blank">
+                        <i class='bx bx-cloud'><%= link4_text %></i>
                     </a>
                 </div>
             </div>
@@ -186,7 +197,7 @@
         </div>
         <hr style="margin-top: 30px;">
         <div class="container-footer">
-            <p>© 2023 - 2024 & Made by malisa</p>
+            <p>© Copyright 2024 & Openpower by <a href="http://103.40.13.88:44447/">Malisa</a> & <%= footer_text %></p>
         </div>
     </div>
 

@@ -7,15 +7,31 @@ const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
 const crypto = require('crypto');
 const axios = require('axios');
+const fs = require('fs');
 
-const secretKey = Buffer.from([3, 107, 37, 82, 18, 68, 2, 156, 191, 39, 196, 211, 27, 173, 122, 24, 53, 91, 124, 42, 210, 78, 62, 108, 138, 230, 172, 166, 125, 197, 27, 167]);
+const secretKey = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
-const publicKey = crypto.randomBytes(24).toString('hex');
-
-//配置区-->
-const SPARK_TOKEN = `wZoywWrKlBKXBbzdaYHu:JmYCNiAscbiLsPNiUGSs`;
 const GEE_CAPTCHA_KEY = `9f13430d7105b3bcefdc765f5538585f`;
-//<--配置区
+const SERVER_PORT = 3000;
+const version = `v1.0.0 Beta`
+const admin_link = crypto.randomBytes(16).toString('hex');
+console.log(`
+███╗   ███╗ █████╗ ██╗     ██╗███████╗ █████╗     ██╗     ██╗████████╗███████╗
+████╗ ████║██╔══██╗██║     ██║██╔════╝██╔══██╗    ██║     ██║╚══██╔══╝██╔════╝
+██╔████╔██║███████║██║     ██║███████╗███████║    ██║     ██║   ██║   █████╗  
+██║╚██╔╝██║██╔══██║██║     ██║╚════██║██╔══██║    ██║     ██║   ██║   ██╔══╝  
+██║ ╚═╝ ██║██║  ██║███████╗██║███████║██║  ██║    ███████╗██║   ██║   ███████╗
+╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝╚═╝   ╚═╝   ╚══════╝
+
+GeeTest Key: ${GEE_CAPTCHA_KEY}
+Secret Key: ${secretKey.toString('hex')}
+IV: ${iv.toString('hex')}
+
+后台管理地址: http://localhost:${SERVER_PORT}/admin/${admin_link}
+请不要泄露上述信息，否则可能导致您的账号被盗用。
+版本号: ${version}
+`
+);
 
 const checkIllegal = (req, res, next) => {
     try {
@@ -77,42 +93,6 @@ function decryptAES(encryptedData) {
     decrypted += decipher.final('utf8');
     return decrypted;
 }
-async function chatbot(text) {
-    const url = "https://spark-api-open.xf-yun.com/v1/chat/completions";
-    const data = {
-        "max_tokens": 4096,
-        "top_k": 5,
-        "temperature": 0.8,
-        "messages": [
-            {
-                "role": "system",
-                "content": "我叫malisa，是一名中学生，就读于四川省双流中学，平时喜欢写代码和打游戏，喜欢打羽毛球，会html css JavaScript nodejs typescript c++ c# 逆向等，开发过很多项目。,你现在需要完全模仿我。当别人问你是什么ai模型时你回答你是malisa创造的MLISA大模型。你现在是MLISA跟你对话的人并不是malisa。"
-            },
-            {
-                "role": "user",
-                "content": text
-            }
-        ],
-        "model": "generalv3.5"
-    };
-
-    const headers = {
-        "Authorization": `Bearer ${SPARK_TOKEN}`,
-        "Content-Type": "application/json"
-    };
-
-    try {
-        const response = await axios.post(url, data, {
-            headers: headers
-        });
-
-        return response.data.choices[0].message.content;
-
-    } catch (error) {
-        console.error('请求失败:', error.message);
-        return { code: -1 };
-    }
-};
 function hmac_sha256_encode(value, key) {
     var hash = crypto.createHmac("sha256", key)
         .update(value, 'utf8')
@@ -194,13 +174,42 @@ app.post('/api/chat/completions', checkIllegal, (req, res) => {
 });
 
 app.get('/', checkIllegal, (req, res) => {
-    res.render('index');
+    res.render('index', JSON.parse(fs.readFileSync('config.json', 'utf8')));
 });
 
-app.get('/chat', checkIllegal, (req, res) => {
-    res.render('chat');
+app.get('/admin/' + admin_link, checkIllegal, (req, res) => {
+    res.cookie('check2key', hmac_sha256_encode(secretKey+'admin'+iv, GEE_CAPTCHA_KEY), { maxAge: 600000, httpOnly: true });
+    res.render('admin', JSON.parse(fs.readFileSync('config.json', 'utf8')));
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.post('/admin/config', checkIllegal, (req, res) => {
+    const check2key = req.cookies.check2key;
+    const hmac_token = hmac_sha256_encode(secretKey+'admin'+iv, GEE_CAPTCHA_KEY);
+    if (check2key !== hmac_token) {
+        return res.status(403).json({ code: -1, message: '身份校验失败' });
+    }
+    const { title, description, ischeckIllegal, isuseHVHsentence, footer_text, link1_text, link1_url, link2_text, link2_url, link3_text, link3_url, link4_text, link4_url } = req.body;
+    const json = JSON.parse(fs.readFileSync('config.json', 'utf8'));    
+
+    json.title = title;
+    json.description = description;
+    json.ischeckIllegal = ischeckIllegal;
+    json.isuseHVHsentence = isuseHVHsentence;
+    json.footer_text = footer_text;
+    json.link1_text = link1_text;
+    json.link1_url = link1_url;
+    json.link2_text = link2_text;
+    json.link2_url = link2_url;
+    json.link3_text = link3_text;
+    json.link3_url = link3_url;
+    json.link4_text = link4_text;
+    json.link4_url = link4_url;
+
+    fs.writeFileSync('config.json', JSON.stringify(json));
+    res.status(200).json({ code: 0, message: '保存成功' });
 });
+
+app.listen(SERVER_PORT, () => {
+    console.log(`[DEBUG] 客户端开放在 http://localhost:${SERVER_PORT}/`);
+});
+
